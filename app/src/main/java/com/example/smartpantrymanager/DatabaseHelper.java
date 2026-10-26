@@ -57,6 +57,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    public boolean updateIngredient(int id,
+                                    String name,
+                                    double quantity,
+                                    String unit) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, name);
+        values.put(COLUMN_QUANTITY, quantity);
+        values.put(COLUMN_UNIT, unit);
+
+        int rowsUpdated = db.update(
+                TABLE_INGREDIENTS,
+                values,
+                COLUMN_ID + " = ?",
+                new String[]{String.valueOf(id)}
+        );
+
+        return rowsUpdated > 0;
+    }
+
 
     public android.database.Cursor getAllIngredients() {
 

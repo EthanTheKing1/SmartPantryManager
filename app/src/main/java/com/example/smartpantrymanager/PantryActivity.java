@@ -97,13 +97,14 @@ public class PantryActivity extends AppCompatActivity {
                         : android.view.View.GONE);
     }
 
+
     private void addIngredientRow(
             int id, String name, double quantity, String unit) {
 
         LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL);
         row.setGravity(Gravity.CENTER_VERTICAL);
-        row.setPadding(16, 12, 8, 12);
+        row.setPadding(12, 12, 6, 12);
         row.setBackgroundColor(Color.rgb(28, 56, 43));
 
         LinearLayout details = new LinearLayout(this);
@@ -116,8 +117,7 @@ public class PantryActivity extends AppCompatActivity {
         nameView.setTypeface(null, Typeface.BOLD);
 
         TextView quantityView = new TextView(this);
-        quantityView.setText(
-                "Quantity: " + quantity + " " + unit);
+        quantityView.setText("Quantity: " + quantity + " " + unit);
         quantityView.setTextColor(Color.rgb(185, 203, 175));
         quantityView.setTextSize(14);
 
@@ -128,16 +128,46 @@ public class PantryActivity extends AppCompatActivity {
                 new LinearLayout.LayoutParams(
                         0,
                         ViewGroup.LayoutParams.WRAP_CONTENT,
-                        1);
-
+                        1
+                );
         row.addView(details, detailsParams);
 
+        // Edit button
+        Button editButton = new Button(this);
+        editButton.setText("Edit");
+        editButton.setAllCaps(false);
+        editButton.setTextSize(12);
+        editButton.setPadding(4, 0, 4, 0);
+        editButton.setTextColor(Color.rgb(244, 240, 228));
+        editButton.setBackgroundTintList(
+                android.content.res.ColorStateList.valueOf(
+                        Color.rgb(75, 105, 78)));
+
+        editButton.setOnClickListener(v -> {
+            Intent intent = new Intent(
+                    PantryActivity.this,
+                    AddIngredientActivity.class
+            );
+
+            intent.putExtra("ingredient_id", id);
+            intent.putExtra("ingredient_name", name);
+            intent.putExtra("ingredient_quantity", quantity);
+            intent.putExtra("ingredient_unit", unit);
+
+            startActivity(intent);
+        });
+
+        row.addView(editButton);
+
+        // Delete button
         Button deleteButton = new Button(this);
         deleteButton.setText("Delete");
         deleteButton.setAllCaps(false);
+        deleteButton.setTextSize(12);
+        deleteButton.setPadding(4, 0, 4, 0);
         deleteButton.setTextColor(Color.rgb(244, 240, 228));
         deleteButton.setBackgroundTintList(
-                ColorStateList.valueOf(
+                android.content.res.ColorStateList.valueOf(
                         Color.rgb(102, 55, 45)));
 
         deleteButton.setOnClickListener(v -> {
@@ -165,12 +195,13 @@ public class PantryActivity extends AppCompatActivity {
         LinearLayout.LayoutParams rowParams =
                 new LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT);
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                );
 
         rowParams.bottomMargin = 10;
-
         ingredientList.addView(row, rowParams);
     }
+
 
     @Override
     protected void onDestroy() {

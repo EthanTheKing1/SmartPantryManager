@@ -15,6 +15,8 @@ public class AddIngredientActivity extends AppCompatActivity {
     private Spinner spinnerIngredientUnit;
     private DatabaseHelper databaseHelper;
 
+    private int ingredientId = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,13 +31,41 @@ public class AddIngredientActivity extends AppCompatActivity {
 
         databaseHelper = new DatabaseHelper(this);
 
-        btnSaveIngredient.setOnClickListener(v -> saveIngredient());
+        // An ID means we are editing an existing ingredient.
+        ingredientId = getIntent().getIntExtra("ingredient_id", -1);
 
+        if (ingredientId != -1) {
+            etIngredientName.setText(
+                    getIntent().getStringExtra("ingredient_name"));
+
+            double quantity =
+                    getIntent().getDoubleExtra("ingredient_quantity", 0);
+
+            etIngredientQuantity.setText(String.valueOf(quantity));
+
+            String unit = getIntent().getStringExtra("ingredient_unit");
+
+            if (unit != null) {
+                for (int i = 0;
+                     i < spinnerIngredientUnit.getCount();
+                     i++) {
+
+                    if (spinnerIngredientUnit.getItemAtPosition(i)
+                            .toString().equals(unit)) {
+                        spinnerIngredientUnit.setSelection(i);
+                        break;
+                    }
+                }
+            }
+
+            btnSaveIngredient.setText("Update Ingredient");
+        }
+
+        btnSaveIngredient.setOnClickListener(v -> saveIngredient());
         btnCancelIngredient.setOnClickListener(v -> finish());
     }
 
     private void saveIngredient() {
-
         String name = etIngredientName.getText().toString().trim();
         String quantityText =
                 etIngredientQuantity.getText().toString().trim();
@@ -71,22 +101,30 @@ public class AddIngredientActivity extends AppCompatActivity {
             return;
         }
 
-        boolean inserted =
-                databaseHelper.addIngredient(name, quantity, unit);
+        boolean successful;
 
-        if (inserted) {
-            Toast.makeText(
-                    this,
-                    "Ingredient saved successfully!",
-                    Toast.LENGTH_SHORT
-            ).show();
+        if (ingredientId == -1) {
+            // No existing ID: insert a new ingredient.
+            successful = databaseHelper.addIngredient(
+                    name, quantity, unit);
+        } else {
+            // Existing ID: update that ingredient.
+            successful = databaseHelper.updateIngredient(
+                    ingredientId, name, quantity, unit);
+        }
 
+        if (successful) {
+            String message = ingredientId == -1
+                    ? "Ingredient saved successfully!"
+                    : "Ingredient updated successfully!";
+
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
             finish();
 
         } else {
             Toast.makeText(
                     this,
-                    "Could not save ingredient. Please try again.",
+                    "Could not save changes. Please try again.",
                     Toast.LENGTH_LONG
             ).show();
         }
