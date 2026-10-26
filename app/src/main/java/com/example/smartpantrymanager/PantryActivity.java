@@ -82,7 +82,11 @@ public class PantryActivity extends AppCompatActivity {
                         cursor.getColumnIndexOrThrow(
                                 DatabaseHelper.COLUMN_UNIT));
 
-                addIngredientRow(id, name, quantity, unit);
+                String expiryDate = cursor.getString(
+                        cursor.getColumnIndexOrThrow(
+                                DatabaseHelper.COLUMN_EXPIRY_DATE));
+
+                addIngredientRow(id, name, quantity, unit, expiryDate);
                 count++;
             }
         }
@@ -99,7 +103,8 @@ public class PantryActivity extends AppCompatActivity {
 
 
     private void addIngredientRow(
-            int id, String name, double quantity, String unit) {
+            int id, String name, double quantity,
+            String unit, String expiryDate) {
 
         LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL);
@@ -120,6 +125,14 @@ public class PantryActivity extends AppCompatActivity {
         quantityView.setText("Quantity: " + quantity + " " + unit);
         quantityView.setTextColor(Color.rgb(185, 203, 175));
         quantityView.setTextSize(14);
+
+        if (expiryDate != null && !expiryDate.isEmpty()) {
+            TextView expiryView = new TextView(this);
+            expiryView.setText("Expires: " + expiryDate);
+            expiryView.setTextColor(Color.rgb(212, 184, 121));
+            expiryView.setTextSize(13);
+            details.addView(expiryView);
+        }
 
         details.addView(nameView);
         details.addView(quantityView);
@@ -153,6 +166,7 @@ public class PantryActivity extends AppCompatActivity {
             intent.putExtra("ingredient_name", name);
             intent.putExtra("ingredient_quantity", quantity);
             intent.putExtra("ingredient_unit", unit);
+            intent.putExtra("ingredient_expiry_date", expiryDate);
 
             startActivity(intent);
         });

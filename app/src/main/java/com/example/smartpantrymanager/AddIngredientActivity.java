@@ -1,21 +1,32 @@
 package com.example.smartpantrymanager;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class AddIngredientActivity extends AppCompatActivity {
 
     private EditText etIngredientName;
     private EditText etIngredientQuantity;
     private Spinner spinnerIngredientUnit;
-    private DatabaseHelper databaseHelper;
+    private TextView tvSelectedExpiryDate;
 
+    private DatabaseHelper databaseHelper;
     private int ingredientId = -1;
+    private String expiryDate = null;
+
+    private final SimpleDateFormat dateFormat =
+            new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,13 +36,15 @@ public class AddIngredientActivity extends AppCompatActivity {
         etIngredientName = findViewById(R.id.etIngredientName);
         etIngredientQuantity = findViewById(R.id.etIngredientQuantity);
         spinnerIngredientUnit = findViewById(R.id.spinnerIngredientUnit);
+        tvSelectedExpiryDate = findViewById(R.id.tvSelectedExpiryDate);
 
         Button btnSaveIngredient = findViewById(R.id.btnSaveIngredient);
         Button btnCancelIngredient = findViewById(R.id.btnCancelIngredient);
+        Button btnSelectExpiryDate = findViewById(R.id.btnSelectExpiryDate);
+        Button btnClearExpiryDate = findViewById(R.id.btnClearExpiryDate);
 
         databaseHelper = new DatabaseHelper(this);
 
-        // An ID means we are editing an existing ingredient.
         ingredientId = getIntent().getIntExtra("ingredient_id", -1);
 
         if (ingredientId != -1) {
@@ -58,11 +71,57 @@ public class AddIngredientActivity extends AppCompatActivity {
                 }
             }
 
+            expiryDate = getIntent().getStringExtra("ingredient_expiry_date");
+            updateExpiryDateLabel();
+
             btnSaveIngredient.setText("Update Ingredient");
         }
 
+        btnSelectExpiryDate.setOnClickListener(v -> showDatePicker());
+
+        btnClearExpiryDate.setOnClickListener(v -> {
+            expiryDate = null;
+            updateExpiryDateLabel();
+        });
+
         btnSaveIngredient.setOnClickListener(v -> saveIngredient());
         btnCancelIngredient.setOnClickListener(v -> finish());
+    }
+
+    private void showDatePicker() {
+        Calendar calendar = Calendar.getInstance();
+
+        if (expiryDate != null) {
+            try {
+                calendar.setTime(dateFormat.parse(expiryDate));
+            } catch (Exception ignored) {
+                // Use today's date if the saved date cannot be parsed.
+            }
+        }
+
+        DatePickerDialog dialog = new DatePickerDialog(
+                this,
+                (view, year, month, dayOfMonth) -> {
+                    Calendar selectedDate = Calendar.getInstance();
+                    selectedDate.set(year, month, dayOfMonth);
+
+                    expiryDate = dateFormat.format(selectedDate.getTime());
+                    updateExpiryDateLabel();
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+        );
+
+        dialog.show();
+    }
+
+    private void updateExpiryDateLabel() {
+        if (expiryDate == null || expiryDate.isEmpty()) {
+            tvSelectedExpiryDate.setText("No expiry date selected");
+        } else {
+            tvSelectedExpiryDate.setText("Expiry date: " + expiryDate);
+        }
     }
 
     private void saveIngredient() {
@@ -104,23 +163,23 @@ public class AddIngredientActivity extends AppCompatActivity {
         boolean successful;
 
         if (ingredientId == -1) {
-            // No existing ID: insert a new ingredient.
             successful = databaseHelper.addIngredient(
-                    name, quantity, unit);
+                    name, quantity, unit, expiryDate);
         } else {
-            // Existing ID: update that ingredient.
             successful = databaseHelper.updateIngredient(
-                    ingredientId, name, quantity, unit);
+                    ingredientId, name, quantity, unit, expiryDate);
         }
 
         if (successful) {
-            String message = ingredientId == -1
-                    ? "Ingredient saved successfully!"
-                    : "Ingredient updated successfully!";
+            Toast.makeText(
+                    this,
+                    ingredientId == -1
+                            ? "Ingredient saved successfully!"
+                            : "Ingredient updated successfully!",
+                    Toast.LENGTH_SHORT
+            ).show();
 
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
             finish();
-
         } else {
             Toast.makeText(
                     this,

@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "smart_pantry.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     public static final String TABLE_INGREDIENTS = "ingredients";
 
@@ -16,6 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_QUANTITY = "quantity";
     public static final String COLUMN_UNIT = "unit";
+    public static final String COLUMN_EXPIRY_DATE = "expiry_date";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -38,35 +39,52 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db,
                           int oldVersion, int newVersion) {
 
-        // Database upgrades will be handled here if the schema changes.
+        if (oldVersion < 2) {
+            db.execSQL(
+                    "ALTER TABLE " + TABLE_INGREDIENTS +
+                            " ADD COLUMN expiry_date TEXT"
+            );
+        }
     }
 
     public boolean addIngredient(String name,
                                  double quantity,
-                                 String unit) {
-
+                                 String unit,
+                                 String expiryDate) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
 
+        ContentValues values = new ContentValues();
         values.put(COLUMN_NAME, name);
         values.put(COLUMN_QUANTITY, quantity);
         values.put(COLUMN_UNIT, unit);
 
-        long result = db.insert(TABLE_INGREDIENTS, null, values);
+        if (expiryDate == null || expiryDate.isEmpty()) {
+            values.putNull(COLUMN_EXPIRY_DATE);
+        } else {
+            values.put(COLUMN_EXPIRY_DATE, expiryDate);
+        }
 
+        long result = db.insert(TABLE_INGREDIENTS, null, values);
         return result != -1;
     }
 
     public boolean updateIngredient(int id,
                                     String name,
                                     double quantity,
-                                    String unit) {
+                                    String unit,
+                                    String expiryDate) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME, name);
         values.put(COLUMN_QUANTITY, quantity);
         values.put(COLUMN_UNIT, unit);
+
+        if (expiryDate == null || expiryDate.isEmpty()) {
+            values.putNull(COLUMN_EXPIRY_DATE);
+        } else {
+            values.put(COLUMN_EXPIRY_DATE, expiryDate);
+        }
 
         int rowsUpdated = db.update(
                 TABLE_INGREDIENTS,

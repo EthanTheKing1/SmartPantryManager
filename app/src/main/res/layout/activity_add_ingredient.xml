@@ -97,6 +97,46 @@
             android:entries="@array/ingredient_units"
             android:padding="8dp" />
 
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Expiry date (optional)"
+            android:textColor="#F4F0E4"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvSelectedExpiryDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="No expiry date selected"
+            android:textColor="#B9CBAF"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/btnSelectExpiryDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#1C382B"
+            android:text="Choose expiry date"
+            android:textAllCaps="false"
+            android:textColor="#F4F0E4" />
+
+        <Button
+            android:id="@+id/btnClearExpiryDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:backgroundTint="#1C382B"
+            android:text="Clear expiry date"
+            android:textAllCaps="false"
+            android:textColor="#F4F0E4" />
+
+
         <Button
             android:id="@+id/btnSaveIngredient"
             android:layout_width="match_parent"
