@@ -1,24 +1,25 @@
 package com.example.smartpantrymanager;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.ViewGroup;
+import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class PantryActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class PantryActivity extends AppCompatActivity
+        implements IngredientAdapter.OnIngredientActionListener {
 
     private DatabaseHelper databaseHelper;
-    private LinearLayout ingredientList;
+    private IngredientAdapter ingredientAdapter;
     private TextView tvIngredientCount;
     private TextView tvEmptyPantry;
 
@@ -29,12 +30,16 @@ public class PantryActivity extends AppCompatActivity {
 
         databaseHelper = new DatabaseHelper(this);
 
-        ingredientList = findViewById(R.id.ingredientList);
         tvIngredientCount = findViewById(R.id.tvIngredientCount);
         tvEmptyPantry = findViewById(R.id.tvEmptyPantry);
 
-        Button btnAddIngredient =
-                findViewById(R.id.btnAddIngredient);
+        RecyclerView rvIngredients = findViewById(R.id.rvIngredients);
+        rvIngredients.setLayoutManager(new LinearLayoutManager(this));
+
+        ingredientAdapter = new IngredientAdapter(this);
+        rvIngredients.setAdapter(ingredientAdapter);
+
+        Button btnAddIngredient = findViewById(R.id.btnAddIngredient);
 
         btnAddIngredient.setOnClickListener(v -> {
             Intent intent = new Intent(
@@ -51,19 +56,15 @@ public class PantryActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if (databaseHelper != null && ingredientList != null) {
+        if (databaseHelper != null && ingredientAdapter != null) {
             loadIngredients();
         }
     }
 
     private void loadIngredients() {
-
-        ingredientList.removeAllViews();
-
-        int count = 0;
+        List<Ingredient> ingredients = new ArrayList<>();
 
         try (Cursor cursor = databaseHelper.getAllIngredients()) {
-
             while (cursor.moveToNext()) {
 
                 int id = cursor.getInt(
@@ -86,10 +87,14 @@ public class PantryActivity extends AppCompatActivity {
                         cursor.getColumnIndexOrThrow(
                                 DatabaseHelper.COLUMN_EXPIRY_DATE));
 
-                addIngredientRow(id, name, quantity, unit, expiryDate);
-                count++;
+                ingredients.add(new Ingredient(
+                        id, name, quantity, unit, expiryDate));
             }
         }
+
+        ingredientAdapter.setIngredients(ingredients);
+
+        int count = ingredients.size();
 
         tvIngredientCount.setText(
                 count + (count == 1
@@ -97,125 +102,48 @@ public class PantryActivity extends AppCompatActivity {
                         : " ingredients saved"));
 
         tvEmptyPantry.setVisibility(
-                count == 0 ? android.view.View.VISIBLE
-                        : android.view.View.GONE);
+                count == 0 ? View.VISIBLE : View.GONE);
     }
 
+    @Override
+    public void onEdit(Ingredient ingredient) {
+        Intent intent = new Intent(
+                PantryActivity.this,
+                AddIngredientActivity.class
+        );
 
-    private void addIngredientRow(
-            int id, String name, double quantity,
-            String unit, String expiryDate) {
+        intent.putExtra("ingredient_id", ingredient.getId());
+        intent.putExtra("ingredient_name", ingredient.getName());
+        intent.putExtra("ingredient_quantity", ingredient.getQuantity());
+        intent.putExtra("ingredient_unit", ingredient.getUnit());
+        intent.putExtra(
+                "ingredient_expiry_date",
+                ingredient.getExpiryDate());
 
-        LinearLayout row = new LinearLayout(this);
-        row.setOrientation(LinearLayout.HORIZONTAL);
-        row.setGravity(Gravity.CENTER_VERTICAL);
-        row.setPadding(12, 12, 6, 12);
-        row.setBackgroundColor(Color.rgb(28, 56, 43));
+        startActivity(intent);
+    }
 
-        LinearLayout details = new LinearLayout(this);
-        details.setOrientation(LinearLayout.VERTICAL);
+    @Override
+    public void onDelete(Ingredient ingredient) {
+        boolean deleted =
+                databaseHelper.deleteIngredient(ingredient.getId());
 
-        TextView nameView = new TextView(this);
-        nameView.setText(name);
-        nameView.setTextColor(Color.rgb(244, 240, 228));
-        nameView.setTextSize(17);
-        nameView.setTypeface(null, Typeface.BOLD);
+        if (deleted) {
+            Toast.makeText(
+                    this,
+                    ingredient.getName() + " deleted",
+                    Toast.LENGTH_SHORT
+            ).show();
 
-        TextView quantityView = new TextView(this);
-        quantityView.setText("Quantity: " + quantity + " " + unit);
-        quantityView.setTextColor(Color.rgb(185, 203, 175));
-        quantityView.setTextSize(14);
-
-        if (expiryDate != null && !expiryDate.isEmpty()) {
-            TextView expiryView = new TextView(this);
-            expiryView.setText("Expires: " + expiryDate);
-            expiryView.setTextColor(Color.rgb(212, 184, 121));
-            expiryView.setTextSize(13);
-            details.addView(expiryView);
+            loadIngredients();
+        } else {
+            Toast.makeText(
+                    this,
+                    "Could not delete ingredient",
+                    Toast.LENGTH_SHORT
+            ).show();
         }
-
-        details.addView(nameView);
-        details.addView(quantityView);
-
-        LinearLayout.LayoutParams detailsParams =
-                new LinearLayout.LayoutParams(
-                        0,
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        1
-                );
-        row.addView(details, detailsParams);
-
-        // Edit button
-        Button editButton = new Button(this);
-        editButton.setText("Edit");
-        editButton.setAllCaps(false);
-        editButton.setTextSize(12);
-        editButton.setPadding(4, 0, 4, 0);
-        editButton.setTextColor(Color.rgb(244, 240, 228));
-        editButton.setBackgroundTintList(
-                android.content.res.ColorStateList.valueOf(
-                        Color.rgb(75, 105, 78)));
-
-        editButton.setOnClickListener(v -> {
-            Intent intent = new Intent(
-                    PantryActivity.this,
-                    AddIngredientActivity.class
-            );
-
-            intent.putExtra("ingredient_id", id);
-            intent.putExtra("ingredient_name", name);
-            intent.putExtra("ingredient_quantity", quantity);
-            intent.putExtra("ingredient_unit", unit);
-            intent.putExtra("ingredient_expiry_date", expiryDate);
-
-            startActivity(intent);
-        });
-
-        row.addView(editButton);
-
-        // Delete button
-        Button deleteButton = new Button(this);
-        deleteButton.setText("Delete");
-        deleteButton.setAllCaps(false);
-        deleteButton.setTextSize(12);
-        deleteButton.setPadding(4, 0, 4, 0);
-        deleteButton.setTextColor(Color.rgb(244, 240, 228));
-        deleteButton.setBackgroundTintList(
-                android.content.res.ColorStateList.valueOf(
-                        Color.rgb(102, 55, 45)));
-
-        deleteButton.setOnClickListener(v -> {
-            boolean deleted = databaseHelper.deleteIngredient(id);
-
-            if (deleted) {
-                Toast.makeText(
-                        this,
-                        name + " deleted",
-                        Toast.LENGTH_SHORT
-                ).show();
-
-                loadIngredients();
-            } else {
-                Toast.makeText(
-                        this,
-                        "Could not delete ingredient",
-                        Toast.LENGTH_SHORT
-                ).show();
-            }
-        });
-
-        row.addView(deleteButton);
-
-        LinearLayout.LayoutParams rowParams =
-                new LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                );
-
-        rowParams.bottomMargin = 10;
-        ingredientList.addView(row, rowParams);
     }
-
 
     @Override
     protected void onDestroy() {

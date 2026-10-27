@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="#1C382B"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvIngredientName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#F4F0E4"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvIngredientQuantity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textColor="#B9CBAF"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tvIngredientExpiry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="#D4B879"
+        android:textSize="13sp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnEditIngredient"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:backgroundTint="#4B694E"
+            android:minWidth="0dp"
+            android:text="Edit"
+            android:textAllCaps="false"
+            android:textColor="#F4F0E4" />
+
+        <Button
+            android:id="@+id/btnDeleteIngredient"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="#66372D"
+            android:minWidth="0dp"
+            android:text="Delete"
+            android:textAllCaps="false"
+            android:textColor="#F4F0E4" />
+
+    </LinearLayout>
+
+</LinearLayout>
