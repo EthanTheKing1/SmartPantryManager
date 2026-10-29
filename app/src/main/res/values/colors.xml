@@ -2,4 +2,14 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="pantry_background">#10251D</color>
+    <color name="pantry_card">#1C382B</color>
+    <color name="pantry_card_light">#254436</color>
+    <color name="pantry_gold">#D4B879</color>
+    <color name="pantry_cream">#F4F0E4</color>
+    <color name="pantry_sage">#B9CBAF</color>
+    <color name="pantry_muted">#78917F</color>
+    <color name="pantry_danger">#66372D</color>
+    <color name="pantry_border">#355342</color>
 </resources>

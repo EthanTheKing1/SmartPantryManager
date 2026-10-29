@@ -7,6 +7,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,6 +29,9 @@ public class AddIngredientActivity extends AppCompatActivity {
 
     private final SimpleDateFormat dateFormat =
             new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+    private int dp(float value) {
+        return (int) (value * getResources().getDisplayMetrics().density + 0.5f);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,18 @@ public class AddIngredientActivity extends AppCompatActivity {
         Button btnCancelIngredient = findViewById(R.id.btnCancelIngredient);
         Button btnSelectExpiryDate = findViewById(R.id.btnSelectExpiryDate);
         Button btnClearExpiryDate = findViewById(R.id.btnClearExpiryDate);
+        ButtonStyler.primary(btnSaveIngredient);
+        ButtonStyler.secondary(btnSelectExpiryDate);
+        ButtonStyler.secondary(btnClearExpiryDate);
+        ButtonStyler.secondary(btnCancelIngredient);
+
+        GradientDrawable saveBackground = new GradientDrawable();
+        saveBackground.setColor(Color.rgb(212, 184, 121));
+        saveBackground.setCornerRadius(dp(14));
+
+        btnSaveIngredient.setBackgroundTintList(null);
+        btnSaveIngredient.setBackground(saveBackground);
+        btnSaveIngredient.setTextColor(Color.rgb(16, 37, 29));
 
         databaseHelper = new DatabaseHelper(this);
 

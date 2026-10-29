@@ -51,7 +51,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:backgroundTint="#D4B879"
+            android:background="@drawable/bg_input"
+            android:backgroundTint="@null"
             android:hint="e.g. Tomatoes"
             android:inputType="textCapSentences"
             android:padding="12dp"
@@ -72,7 +73,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:backgroundTint="#D4B879"
+            android:background="@drawable/bg_input"
+            android:backgroundTint="@null"
             android:hint="e.g. 6"
             android:inputType="numberDecimal"
             android:padding="12dp"
@@ -131,29 +133,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:backgroundTint="#1C382B"
+            android:backgroundTint="@null"
             android:text="Clear expiry date"
             android:textAllCaps="false"
             android:textColor="#F4F0E4" />
 
 
+
         <Button
             android:id="@+id/btnSaveIngredient"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:layout_marginTop="32dp"
-            android:backgroundTint="#D4B879"
+            android:backgroundTint="@null"
             android:text="Save Ingredient"
             android:textAllCaps="false"
-            android:textColor="#10251D"
-            android:textSize="16sp" />
+            android:textColor="@color/pantry_background"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
 
         <Button
             android:id="@+id/btnCancelIngredient"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:backgroundTint="#1C382B"
+            android:backgroundTint="@null"
             android:text="Cancel"
             android:textAllCaps="false"
             android:textColor="#F4F0E4"

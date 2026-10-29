@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#10251D"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SETTINGS"
+            android:textColor="#D4B879"
+            android:textStyle="bold"
+            android:textSize="13sp"
+            android:letterSpacing="0.12" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="App preferences"
+            android:textColor="#F4F0E4"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:paddingTop="8dp"
+            android:paddingBottom="24dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#1C382B"
+            android:padding="18dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ABOUT THE APP"
+                android:textColor="#D4B879"
+                android:textStyle="bold"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Smart Pantry Manager helps you track ingredients, reduce food waste, and discover recipes based on what you already have."
+                android:textColor="#F4F0E4"
+                android:textSize="16sp"
+                android:lineSpacingExtra="5dp"
+                android:paddingTop="12dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#496452"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="FEATURES"
+                android:textColor="#D4B879"
+                android:textStyle="bold"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="• Add, edit and delete pantry ingredients\n\n• Track optional expiry dates\n\n• Match ingredients against 20 stored recipes\n\n• View recipe ingredients and preparation steps"
+                android:textColor="#F4F0E4"
+                android:textSize="15sp"
+                android:lineSpacingExtra="4dp"
+                android:paddingTop="12dp" />
+
+            <TextView
+                android:id="@+id/txtAppVersion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Smart Pantry Manager\nVersion 1.0"
+                android:textColor="#B9CBAF"
+                android:textSize="13sp"
+                android:paddingTop="22dp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnSettingsBack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Back to Home"
+            android:textAllCaps="false"
+            android:layout_marginTop="20dp" />
+
+    </LinearLayout>
+</ScrollView>

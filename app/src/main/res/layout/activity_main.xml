@@ -86,7 +86,7 @@
                 android:id="@+id/btnPantry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#D4B879"
+                android:backgroundTint="@null"
                 android:text="VIEW MY PANTRY  →"
                 android:textColor="#10251D"
                 android:textStyle="bold"
@@ -118,7 +118,7 @@
             android:id="@+id/btnRecipes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#254436"
+            android:backgroundTint="@null"
             android:text="EXPLORE RECIPES  →"
             android:textColor="#F4F0E4"
             android:textStyle="bold"
@@ -132,7 +132,7 @@
             android:layout_marginTop="28dp"
             android:orientation="vertical"
             android:padding="18dp"
-            android:background="#1C382B">
+            android:background="@drawable/bg_card">
 
             <TextView
                 android:layout_width="match_parent"
@@ -155,7 +155,7 @@
                 android:id="@+id/btnSettings"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#254436"
+                android:backgroundTint="@null"
                 android:text="OPEN SETTINGS"
                 android:textColor="#D4B879"
                 android:textAllCaps="false" />

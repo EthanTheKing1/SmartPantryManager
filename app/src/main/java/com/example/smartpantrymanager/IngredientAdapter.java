@@ -49,6 +49,11 @@ public class IngredientAdapter
             @NonNull IngredientViewHolder holder, int position) {
 
         Ingredient ingredient = ingredients.get(position);
+        ButtonStyler.secondary(
+                holder.itemView.findViewById(R.id.btnEditIngredient));
+
+        ButtonStyler.danger(
+                holder.itemView.findViewById(R.id.btnDeleteIngredient));
 
         holder.tvName.setText(ingredient.getName());
         holder.tvQuantity.setText(
