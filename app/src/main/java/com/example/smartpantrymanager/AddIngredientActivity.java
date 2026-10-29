@@ -185,7 +185,15 @@ public class AddIngredientActivity extends AppCompatActivity {
             return;
         }
 
+
         double quantity;
+
+        if (!quantityText.matches("\\d+(\\.\\d+)?")) {
+            etIngredientQuantity.setError(
+                    "Enter a valid quantity, e.g. 1 or 0.5");
+            etIngredientQuantity.requestFocus();
+            return;
+        }
 
         try {
             quantity = Double.parseDouble(quantityText);
@@ -202,6 +210,7 @@ public class AddIngredientActivity extends AppCompatActivity {
             etIngredientQuantity.requestFocus();
             return;
         }
+
 
         boolean successful;
 

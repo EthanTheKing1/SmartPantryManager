@@ -56,6 +56,16 @@
             android:padding="20dp"
             android:background="#1C382B">
 
+            <ImageView
+                android:id="@+id/imgHomePantry"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginBottom="18dp"
+                android:contentDescription="Fresh pantry ingredients"
+                android:scaleType="centerCrop"
+                android:src="@drawable/home_pantry" />
+
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -113,6 +123,15 @@
             android:text="Recipes that work with what you already have."
             android:textColor="#B9CBAF"
             android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/imgHomeRecipes"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:layout_marginBottom="14dp"
+            android:contentDescription="Open cookbook surrounded by ingredients"
+            android:scaleType="centerCrop"
+            android:src="@drawable/home_recipes" />
 
         <Button
             android:id="@+id/btnRecipes"

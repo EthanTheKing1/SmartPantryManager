@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ImageView;
+import android.graphics.drawable.GradientDrawable;
 
 import java.util.Locale;
 
@@ -28,6 +30,15 @@ public class RecipeDetailActivity extends Activity {
 
         TextView title = findViewById(R.id.txtRecipeTitle);
         TextView preparation = findViewById(R.id.txtPreparationSteps);
+        ImageView recipeImage = findViewById(R.id.imgRecipeDetail);
+
+        int imageResource = findRecipeImage(name);
+
+        if (imageResource != 0) {
+            recipeImage.setImageResource(imageResource);
+        } else {
+            recipeImage.setImageDrawable(null);
+        }
 
         title.setText(name == null ? "Recipe" : name);
         preparation.setText(steps == null ? "" : steps);
@@ -73,6 +84,86 @@ public class RecipeDetailActivity extends Activity {
         }
 
         return String.format(Locale.getDefault(), "%.2f", quantity);
+    }
+
+    private int findRecipeImage(String recipeName) {
+        if (recipeName == null) {
+            return 0;
+        }
+
+        String name = recipeName.trim().toLowerCase(Locale.ROOT);
+        String drawableName;
+
+        switch (name) {
+            case "cheese omelette":
+                drawableName = "recipe_cheese_omelette";
+                break;
+            case "tomato pasta":
+                drawableName = "recipe_tomato_pasta";
+                break;
+            case "banana pancakes":
+                drawableName = "recipe_banana_pancakes";
+                break;
+            case "garlic butter pasta":
+                drawableName = "recipe_garlic_butter_pasta";
+                break;
+            case "cheese sandwich":
+                drawableName = "recipe_cheese_sandwich";
+                break;
+            case "french toast":
+                drawableName = "recipe_french_toast";
+                break;
+            case "tomato and cheese toast":
+                drawableName = "recipe_tomato_cheese_toast";
+                break;
+            case "banana smoothie":
+                drawableName = "recipe_banana_smoothie";
+                break;
+            case "fluffy scrambled eggs":
+                drawableName = "recipe_scrambled_eggs";
+                break;
+            case "simple flour flatbread":
+                drawableName = "recipe_flour_flatbread";
+                break;
+            case "garlic butter bread":
+                drawableName = "recipe_garlic_butter_bread";
+                break;
+            case "tomato omelette":
+                drawableName = "recipe_tomato_omelette";
+                break;
+            case "cheesy pasta":
+                drawableName = "recipe_cheesy_pasta";
+                break;
+            case "banana french toast":
+                drawableName = "recipe_banana_french_toast";
+                break;
+            case "tomato pasta with cheese":
+                drawableName = "recipe_tomato_pasta_cheese";
+                break;
+            case "creamy garlic pasta":
+                drawableName = "recipe_creamy_garlic_pasta";
+                break;
+            case "egg and cheese sandwich":
+                drawableName = "recipe_egg_cheese_sandwich";
+                break;
+            case "banana milk bowl":
+                drawableName = "recipe_banana_milk_bowl";
+                break;
+            case "tomato garlic pasta":
+                drawableName = "recipe_tomato_garlic_pasta";
+                break;
+            case "cheese and garlic flatbread":
+                drawableName = "recipe_cheese_garlic_flatbread";
+                break;
+            default:
+                return 0;
+        }
+
+        return getResources().getIdentifier(
+                drawableName,
+                "drawable",
+                getPackageName()
+        );
     }
 
 }

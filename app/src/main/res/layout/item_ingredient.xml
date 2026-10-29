@@ -7,31 +7,58 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/tvIngredientName"
+    <!-- Ingredient image and details -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#F4F0E4"
-        android:textSize="17sp"
-        android:textStyle="bold" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/tvIngredientQuantity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:textColor="#B9CBAF"
-        android:textSize="14sp" />
+        <ImageView
+            android:id="@+id/imgIngredient"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:layout_marginEnd="14dp"
+            android:contentDescription="Ingredient image"
+            android:scaleType="centerCrop"
+            android:background="#10251D" />
 
-    <TextView
-        android:id="@+id/tvIngredientExpiry"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:textColor="#D4B879"
-        android:textSize="13sp"
-        android:visibility="gone" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/tvIngredientName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#F4F0E4"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvIngredientQuantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textColor="#B9CBAF"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvIngredientExpiry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="#D4B879"
+                android:textSize="13sp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Existing Edit and Delete buttons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,9 +70,9 @@
             android:id="@+id/btnEditIngredient"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
+            android:layout_marginEnd="6dp"
             android:backgroundTint="@null"
             android:minWidth="0dp"
-            android:layout_marginEnd="6dp"
             android:text="Edit"
             android:textAllCaps="false"
             android:textColor="#F4F0E4" />

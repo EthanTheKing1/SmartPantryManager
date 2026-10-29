@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,6 +57,27 @@ public class IngredientAdapter
                 holder.itemView.findViewById(R.id.btnDeleteIngredient));
 
         holder.tvName.setText(ingredient.getName());
+
+        String imageName = ingredient.getName()
+                .trim()
+                .toLowerCase(java.util.Locale.ROOT)
+                .replaceAll("[^a-z0-9]+", "_")
+                .replaceAll("^_+|_+$", "");
+
+        int imageResource = holder.itemView.getContext()
+                .getResources()
+                .getIdentifier(
+                        imageName,
+                        "drawable",
+                        holder.itemView.getContext().getPackageName()
+                );
+
+        if (imageResource != 0) {
+            holder.imgIngredient.setImageResource(imageResource);
+        } else {
+            holder.imgIngredient.setImageDrawable(null);
+        }
+
         holder.tvQuantity.setText(
                 "Quantity: " + ingredient.getQuantity()
                         + " " + ingredient.getUnit());
@@ -89,15 +111,19 @@ public class IngredientAdapter
         TextView tvExpiry;
         Button btnEdit;
         Button btnDelete;
+        ImageView imgIngredient;
 
         IngredientViewHolder(@NonNull View itemView) {
             super(itemView);
+
 
             tvName = itemView.findViewById(R.id.tvIngredientName);
             tvQuantity = itemView.findViewById(R.id.tvIngredientQuantity);
             tvExpiry = itemView.findViewById(R.id.tvIngredientExpiry);
             btnEdit = itemView.findViewById(R.id.btnEditIngredient);
             btnDelete = itemView.findViewById(R.id.btnDeleteIngredient);
+            imgIngredient = itemView.findViewById(R.id.imgIngredient);
+
         }
     }
 }
