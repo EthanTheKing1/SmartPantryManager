@@ -94,6 +94,32 @@ public class AddIngredientActivity extends AppCompatActivity {
             btnSaveIngredient.setText("Update Ingredient");
         }
 
+        else {
+            String catalogueName =
+                    getIntent().getStringExtra("catalogue_name");
+
+            String catalogueUnit =
+                    getIntent().getStringExtra("catalogue_unit");
+
+            if (catalogueName != null) {
+                etIngredientName.setText(catalogueName);
+            }
+
+            if (catalogueUnit != null) {
+                for (int i = 0;
+                     i < spinnerIngredientUnit.getCount();
+                     i++) {
+
+                    if (spinnerIngredientUnit.getItemAtPosition(i)
+                            .toString().equals(catalogueUnit)) {
+                        spinnerIngredientUnit.setSelection(i);
+                        break;
+                    }
+                }
+            }
+        }
+
+
         btnSelectExpiryDate.setOnClickListener(v -> showDatePicker());
 
         btnClearExpiryDate.setOnClickListener(v -> {

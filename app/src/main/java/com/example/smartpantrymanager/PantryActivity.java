@@ -44,10 +44,11 @@ public class PantryActivity extends AppCompatActivity
         btnAddIngredient.setOnClickListener(v -> {
             Intent intent = new Intent(
                     PantryActivity.this,
-                    AddIngredientActivity.class
+                    IngredientPickerActivity.class
             );
             startActivity(intent);
         });
+
 
         loadIngredients();
     }
