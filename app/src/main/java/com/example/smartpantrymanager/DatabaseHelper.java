@@ -340,24 +340,108 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         );
     }
 
+
+
     public boolean addIngredient(
             String name, double quantity, String unit, String expiryDate) {
 
         SQLiteDatabase db = getWritableDatabase();
+        String normalisedName = normaliseIngredientName(name);
+        String normalisedExpiry = normaliseExpiryDate(expiryDate);
+
+        Cursor cursor = db.query(
+                TABLE_INGREDIENTS,
+                new String[]{
+                        COLUMN_ID,
+                        COLUMN_NAME,
+                        COLUMN_QUANTITY,
+                        COLUMN_UNIT,
+                        COLUMN_EXPIRY_DATE
+                },
+                null, null, null, null, null
+        );
+
+        try {
+            while (cursor.moveToNext()) {
+                int existingId = cursor.getInt(0);
+                String existingName = cursor.getString(1);
+                double existingQuantity = cursor.getDouble(2);
+                String existingUnit = cursor.getString(3);
+                String existingExpiry = cursor.getString(4);
+
+                if (!normaliseIngredientName(existingName)
+                        .equals(normalisedName)) {
+                    continue;
+                }
+
+                if (!existingUnit.equalsIgnoreCase(unit)) {
+                    continue;
+                }
+
+                if (!normaliseExpiryDate(existingExpiry)
+                        .equals(normalisedExpiry)) {
+                    continue;
+                }
+
+                ContentValues values = new ContentValues();
+                values.put(
+                        COLUMN_QUANTITY,
+                        existingQuantity + quantity
+                );
+
+                return db.update(
+                        TABLE_INGREDIENTS,
+                        values,
+                        COLUMN_ID + " = ?",
+                        new String[]{String.valueOf(existingId)}
+                ) > 0;
+            }
+        } finally {
+            cursor.close();
+        }
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME, name);
+        values.put(COLUMN_NAME, name.trim());
         values.put(COLUMN_QUANTITY, quantity);
         values.put(COLUMN_UNIT, unit);
 
-        if (expiryDate == null || expiryDate.isEmpty()) {
+        if (normalisedExpiry == null) {
             values.putNull(COLUMN_EXPIRY_DATE);
         } else {
-            values.put(COLUMN_EXPIRY_DATE, expiryDate);
+            values.put(COLUMN_EXPIRY_DATE, normalisedExpiry);
         }
 
         return db.insert(TABLE_INGREDIENTS, null, values) != -1;
     }
+
+    private String normaliseExpiryDate(String expiryDate) {
+        if (expiryDate == null || expiryDate.trim().isEmpty()) {
+            return null;
+        }
+
+        return expiryDate.trim();
+    }
+
+
+    private String normaliseIngredientName(String name) {
+        String normalised = name.trim().toLowerCase(
+                java.util.Locale.ROOT);
+
+        if (normalised.endsWith("ies") && normalised.length() > 3) {
+            return normalised.substring(0, normalised.length() - 3) + "y";
+        }
+
+        if (normalised.endsWith("oes") && normalised.length() > 3) {
+            return normalised.substring(0, normalised.length() - 2);
+        }
+
+        if (normalised.endsWith("s") && normalised.length() > 1) {
+            return normalised.substring(0, normalised.length() - 1);
+        }
+
+        return normalised;
+    }
+
 
     public boolean updateIngredient(
             int id, String name, double quantity,

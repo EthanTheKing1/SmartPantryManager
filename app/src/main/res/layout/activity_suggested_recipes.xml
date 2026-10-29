@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SUGGESTED RECIPES"
+        android:text="RECIPE DISCOVERY"
         android:textColor="#D4B879"
         android:textSize="13sp"
         android:textStyle="bold"
@@ -19,7 +19,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Meals you can make"
+        android:text="Find your next meal"
         android:textColor="#F4F0E4"
         android:textSize="27sp"
         android:textStyle="bold"
@@ -30,20 +30,40 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@null"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="4dp"
         android:text="← Home"
         android:textAllCaps="false" />
 
-    <TextView
-        android:id="@+id/txtNoRecipes"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="No complete recipe matches yet. Add more ingredients to your pantry."
-        android:textColor="#B9CBAF"
-        android:textSize="16sp"
-        android:gravity="center"
-        android:padding="24dp"
-        android:visibility="gone" />
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:background="#1C382B"
+        android:padding="4dp">
+
+        <Button
+            android:id="@+id/btnSuggestedTab"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Suggested"
+            android:textAllCaps="false"
+            android:textColor="#10251D"
+            android:backgroundTint="#D4B879" />
+
+        <Button
+            android:id="@+id/btnAlmostThereTab"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Almost There"
+            android:textAllCaps="false"
+            android:textColor="#F4F0E4"
+            android:backgroundTint="#1C382B" />
+
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -51,12 +71,82 @@
         android:layout_weight="1"
         android:fillViewport="true">
 
-        <LinearLayout
-            android:id="@+id/recipeContainer"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="16dp" />
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/suggestedSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtNoRecipes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No complete recipe matches yet. Add more ingredients to your pantry."
+                    android:textColor="#B9CBAF"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:padding="24dp"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/recipeContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="8dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/almostThereSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ONE INGREDIENT AWAY"
+                    android:textColor="#D4B879"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.08"
+                    android:paddingBottom="6dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Almost in your kitchen"
+                    android:textColor="#F4F0E4"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:paddingBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/txtNoAlmostThere"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No recipes are one ingredient away yet."
+                    android:textColor="#B9CBAF"
+                    android:textSize="14sp"
+                    android:padding="12dp"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/almostThereContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="8dp" />
+
+            </LinearLayout>
+
+        </FrameLayout>
     </ScrollView>
 
 </LinearLayout>

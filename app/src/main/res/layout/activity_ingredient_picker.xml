@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:padding="20dp">
 
         <Button
             android:id="@+id/btnPickerBack"
@@ -35,6 +35,14 @@
             android:textColor="@color/pantry_cream"
             android:textSize="25sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Choose an ingredient to add to your pantry."
+            android:textColor="@color/pantry_sage"
+            android:textSize="14sp" />
 
         <EditText
             android:id="@+id/etIngredientSearch"
@@ -78,14 +86,18 @@
             android:layout_marginTop="16dp"
             android:text="No ingredients found. Try another search."
             android:textColor="@color/pantry_sage"
+            android:gravity="center"
             android:visibility="gone" />
 
-        <LinearLayout
+        <GridLayout
             android:id="@+id/ingredientContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:orientation="vertical" />
+            android:columnCount="2"
+            android:alignmentMode="alignMargins"
+            android:useDefaultMargins="true"
+            android:orientation="horizontal" />
 
     </LinearLayout>
 </ScrollView>
